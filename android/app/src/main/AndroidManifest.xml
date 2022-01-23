@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.quran">
    <application
-        android:label="Tilawa"
+        android:label="QuranCloud"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
