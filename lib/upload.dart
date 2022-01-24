@@ -9,7 +9,14 @@ import 'package:file_picker/file_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Upload extends StatefulWidget {
+  UploadTask ? task;
+  UploadTask ? sec_task;
+  File ? file;
+  File ? pic_file;
+  final _firestoreinstance = FirebaseFirestore.instance;
 
+  TextEditingController recitition_name = TextEditingController();
+  TextEditingController reader_name = TextEditingController();
 
 
   Upload({Key? key}) : super(key: key);
@@ -41,15 +48,8 @@ class _UploadState extends State<Upload> {
 
 
 
-    return SafeArea(child: Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back), onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context)=> HomePage())); },
-          color: Colors.brown,
-        ),
-      ),
+    return  SafeArea(child: Scaffold(
+
       backgroundColor: Colors.grey[150],
       body: Directionality(
         textDirection: TextDirection.rtl,
