@@ -48,6 +48,8 @@ dependencies:
   flutter_sound_lite: ^8.4.2
   audioplayers: ^0.20.1
   audio_video_progress_bar: ^0.10.0
+  get: ^4.6.1
+  firestore_search: ^0.1.9
 
 
 dev_dependencies:

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'firebase_api.dart';
 import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'homepage.dart';
@@ -45,6 +46,9 @@ class _UploadState extends State<Upload> {
 
     final fileName = file != null ? file?.path.split('/').last : 'No File Selected';
     final picName = pic_file != null ? pic_file?.path.split('/').last : 'No File Selected';
+
+    List <String> splitList = recitition_name.text.split(" ");
+    List <String> indexList = [];
 
 
 
@@ -154,6 +158,11 @@ class _UploadState extends State<Upload> {
                     SizedBox(height: 6,),
 
                     OutlineButton.icon(onPressed: () async {
+                      for (int i = 0;i < splitList.length; i ++){
+                          indexList.add(
+                              splitList[i]);
+                        }
+
                           final song = await FilePicker.platform.pickFiles(allowMultiple: false);
                           if (song == null) return;
                           final path = song.files.single.path!;
@@ -203,7 +212,12 @@ class _UploadState extends State<Upload> {
 
                         };
 
+
                         _firestoreinstance.collection('recititions').doc().set(data);
+
+                        print(splitList);
+                        print(indexList);
+
 
                   },
                       shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
@@ -224,6 +238,20 @@ class _UploadState extends State<Upload> {
         ),
       ),
     ));
+  }
+}
+
+void addNameList (String rec_name){
+  List <String> splitList = rec_name.split(" ");
+  List <String> indexList = [];
+  for (int i = 0;i < splitList.length; i ++){
+    for (int y = 0; y < splitList.length; y ++) {
+      indexList.add(splitList[i].substring(0, y).toLowerCase());
+    }
+    FirebaseFirestore.instance
+        .collection('recititions')
+        .doc()
+        .set({'rec_name' : rec_name, 'nameSeach' : indexList});
   }
 }
 

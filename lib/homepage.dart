@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:anim_search_bar/anim_search_bar.dart';
+import 'package:quran/SearchPage.dart';
 import 'package:quran/upload.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -139,10 +141,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     ),
-    Icon(
-      Icons.camera,
-      size: 150,
-    ),
+     SearchPage(),
      Upload(),
 
   ];
@@ -181,3 +180,5 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+
