@@ -47,10 +47,8 @@ class _UploadState extends State<Upload> {
     final fileName = file != null ? file?.path.split('/').last : 'No File Selected';
     final picName = pic_file != null ? pic_file?.path.split('/').last : 'No File Selected';
 
-    List <String> splitList = recitition_name.text.split(" ");
     List <String> indexList = [];
-
-
+    var word = '';
 
     return  SafeArea(child: Scaffold(
 
@@ -97,38 +95,39 @@ class _UploadState extends State<Upload> {
                   ),
                   SizedBox(height: 20,),
                   // Email Box
-                  Container(
-                    width: 350,
-                    child: TextFormField(
+                   Container(
+                      width: 350,
+                      child: TextFormField(
 
 
-                      validator: (value){
-                        if (value == null){
-                          return 'الرجاء إدخال اسم القارئ';
-                        }
-                        return null;
-                      },
+                        validator: (value){
+                          if (value == null){
+                            return 'الرجاء إدخال اسم القارئ';
+                          }
+                          return null;
+                        },
 
-                      controller: reader_name,
-                      onChanged: (value){
-                        null;
-                      },
-                      style: TextStyle(color: Colors.black38),
-                      keyboardType: TextInputType.emailAddress,
-                      autofocus: false,
-                      decoration: InputDecoration(
-                        labelText: 'اسم القارئ',
-                        focusedBorder:OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.black38, width: 2.0),
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(32),
+                        controller: reader_name,
+                        onChanged: (value){
+                          null;
+                        },
+                        style: TextStyle(color: Colors.black38),
+                        keyboardType: TextInputType.emailAddress,
+                        autofocus: false,
+                        decoration: InputDecoration(
+                          labelText: 'اسم القارئ',
+                          focusedBorder:OutlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.black38, width: 2.0),
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                          contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(32),
+                          ),
                         ),
                       ),
                     ),
-                  ),
+
                   SizedBox(height: 15,),
                   // Sign Up Button
 
@@ -157,11 +156,23 @@ class _UploadState extends State<Upload> {
 
                     SizedBox(height: 6,),
 
-                    OutlineButton.icon(onPressed: () async {
-                      for (int i = 0;i < splitList.length; i ++){
-                          indexList.add(
-                              splitList[i]);
-                        }
+
+
+            OutlineButton.icon(onPressed: ()  {
+              recitition_name.text.split('').forEach((char) {
+                word = (char.isEmpty) ?  '': word + char.toLowerCase();
+                indexList.add(word);
+              });
+              print(indexList);
+
+
+      },
+        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+        label: Text('listcreation',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
+        icon: Icon(Icons.headphones),
+      ),
+
+                  OutlineButton.icon(onPressed: () async {
 
                           final song = await FilePicker.platform.pickFiles(allowMultiple: false);
                           if (song == null) return;
@@ -204,21 +215,18 @@ class _UploadState extends State<Upload> {
                         if (task == null) return;
                         final snapshot = await task!.whenComplete(() {});
                         final urlDownload = await snapshot.ref.getDownloadURL();
+
                         var data = {
                           'rec_name' : recitition_name.text,
                           'rec_reader' : reader_name.text,
                           'song_url' : urlDownload.toString(),
                           'pic_url' : pic_urlDownload.toString(),
-
+                          'nameList' : indexList,
                         };
 
 
+
                         _firestoreinstance.collection('recititions').doc().set(data);
-
-                        print(splitList);
-                        print(indexList);
-
-
                   },
                       shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                       label: Text(
@@ -248,6 +256,7 @@ void addNameList (String rec_name){
     for (int y = 0; y < splitList.length; y ++) {
       indexList.add(splitList[i].substring(0, y).toLowerCase());
     }
+
     FirebaseFirestore.instance
         .collection('recititions')
         .doc()
