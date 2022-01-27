@@ -47,8 +47,7 @@ class _UploadState extends State<Upload> {
     final fileName = file != null ? file?.path.split('/').last : 'No File Selected';
     final picName = pic_file != null ? pic_file?.path.split('/').last : 'No File Selected';
 
-    List <String> indexList = [];
-    var word = '';
+
 
     return  SafeArea(child: Scaffold(
 
@@ -113,11 +112,7 @@ class _UploadState extends State<Upload> {
 
                         controller: reader_name,
                         onChanged: (value){
-                          recitition_name.text.split('').forEach((char) {
-                            word = (char.isEmpty) ?  '': word + char.toLowerCase();
-                            indexList.add(word);
-                          });
-
+                          null;
                         },
                         style: TextStyle(color: Colors.black38),
                         keyboardType: TextInputType.emailAddress,
@@ -136,18 +131,7 @@ class _UploadState extends State<Upload> {
                       ),
                     ),
 
-                  OutlineButton.icon(onPressed: ()  {
-                    setState(() {
-                      recitition_name.text.split('').forEach((char) {
-                        word = (char.isEmpty) ? '' : word + char.toLowerCase();
-                        indexList.add(word);
-                      });
-                    });
-                  },
-                    shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                    label: Text('LabelIndex',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
-                    icon: Icon(Icons.image),
-                  ),
+
 
                   SizedBox(height: 15,),
                   // Sign Up Button
@@ -230,7 +214,7 @@ class _UploadState extends State<Upload> {
                           'rec_reader' : reader_name.text,
                           'song_url' : urlDownload.toString(),
                           'pic_url' : pic_urlDownload.toString(),
-                          'nameList' : indexList,
+                          'searchList' : setSearchParam(recitition_name.text),
                         };
 
 
@@ -258,19 +242,14 @@ class _UploadState extends State<Upload> {
   }
 }
 
-void addNameList (String rec_name){
-  List <String> splitList = rec_name.split(" ");
-  List <String> indexList = [];
-  for (int i = 0;i < splitList.length; i ++){
-    for (int y = 0; y < splitList.length; y ++) {
-      indexList.add(splitList[i].substring(0, y).toLowerCase());
-    }
-
-    FirebaseFirestore.instance
-        .collection('recititions')
-        .doc()
-        .set({'rec_name' : rec_name, 'nameSeach' : indexList});
+setSearchParam(String caseNumber) {
+  List<String> caseSearchList = [];
+  String temp = "";
+  for (int i = 0; i < caseNumber.length; i++) {
+    temp = temp + caseNumber[i];
+    caseSearchList.add(temp);
   }
+  return caseSearchList;
 }
 
 

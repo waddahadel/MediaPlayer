@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:anim_search_bar/anim_search_bar.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -8,50 +9,55 @@ class SearchPage extends StatefulWidget {
   _SearchPageState createState() => _SearchPageState();
 }
 
+
 class _SearchPageState extends State<SearchPage> {
-  String name = "";
+
+  TextEditingController query = TextEditingController();
+
+  Object? get documentlist => documentlist;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: TextField(
-            onChanged: (val) => initiateSearch(val),
-          ),
-        ),
-        body: StreamBuilder<QuerySnapshot>(
-          stream: name != "" && name != null
-              ? FirebaseFirestore.instance
-              .collection('recititions')
-              .where("nameSearch", arrayContains: name)
-              .snapshots()
-              : FirebaseFirestore.instance.collection("recititions").snapshots(),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return new Text('Loading...');
-              default:
-                return new ListView(
-                  children:
-                  snapshot.data!.docs.map((DocumentSnapshot document) {
-                    return new ListTile(
-                      title: new Text(document['rec_name']),
-                    );
-                  }).toList(),
-                );
-            }
-          },
-        ),
+    return SafeArea(
+      child: Scaffold(
+              body: Container(
+                child: Column(
+                  children: [
+                    SizedBox(height: 15,),
+                    TextField(
+                      onChanged: (query){
+                        getCasesDetailList(query);
+                      },
+                      decoration: InputDecoration(
+                          fillColor: Colors.grey,
+                          prefixIcon: Icon(Icons.search),
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.clear),
+                            onPressed: () {
+                              /* Clear the search field */
+                            },
+                          ),
+                          hintText: 'البحث عن التلاوات',
+                          ),
+                    ),
+                    TextButton(onPressed: (){
+                      print(documentlist);
+                    },
+                    child: Text('press me'),)
+                  ],
+                ),
+              ),
+
       ),
     );
   }
 
-  void initiateSearch(String val) {
-    setState(() {
-      name = val.toLowerCase().trim();
-    });
-  }
+}
+
+getCasesDetailList(String query) async {
+  List<DocumentSnapshot> documentList = (await FirebaseFirestore.instance
+      .collection("recititions")
+      .where("rec_name", arrayContains: query)
+      .get())
+      .docs;
 }
