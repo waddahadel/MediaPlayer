@@ -80,6 +80,9 @@ class _UploadState extends State<Upload> {
                       style: TextStyle(color: Colors.black38),
                       keyboardType: TextInputType.emailAddress,
                       autofocus: false,
+                      onChanged: (value){
+                        print('pressed');
+                      },
                       decoration: InputDecoration(
                         labelText: 'عنوان التلاوة',
                         focusedBorder:OutlineInputBorder(
@@ -107,9 +110,14 @@ class _UploadState extends State<Upload> {
                           return null;
                         },
 
+
                         controller: reader_name,
                         onChanged: (value){
-                          null;
+                          recitition_name.text.split('').forEach((char) {
+                            word = (char.isEmpty) ?  '': word + char.toLowerCase();
+                            indexList.add(word);
+                          });
+
                         },
                         style: TextStyle(color: Colors.black38),
                         keyboardType: TextInputType.emailAddress,
@@ -127,6 +135,19 @@ class _UploadState extends State<Upload> {
                         ),
                       ),
                     ),
+
+                  OutlineButton.icon(onPressed: ()  {
+                    setState(() {
+                      recitition_name.text.split('').forEach((char) {
+                        word = (char.isEmpty) ? '' : word + char.toLowerCase();
+                        indexList.add(word);
+                      });
+                    });
+                  },
+                    shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                    label: Text('LabelIndex',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
+                    icon: Icon(Icons.image),
+                  ),
 
                   SizedBox(height: 15,),
                   // Sign Up Button
@@ -158,19 +179,7 @@ class _UploadState extends State<Upload> {
 
 
 
-            OutlineButton.icon(onPressed: ()  {
-              recitition_name.text.split('').forEach((char) {
-                word = (char.isEmpty) ?  '': word + char.toLowerCase();
-                indexList.add(word);
-              });
-              print(indexList);
 
-
-      },
-        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-        label: Text('listcreation',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
-        icon: Icon(Icons.headphones),
-      ),
 
                   OutlineButton.icon(onPressed: () async {
 
