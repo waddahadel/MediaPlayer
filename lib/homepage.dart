@@ -149,33 +149,36 @@ class _HomePageState extends State<HomePage> {
 
   Widget build(BuildContext context) {
     return  SafeArea(
-      child: Scaffold(
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Scaffold(
 
-        bottomNavigationBar: BottomNavigationBar(
-          items:  <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'الرئيسية',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'بحث',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.add),
-              label: 'إضافة تلاوة',
-            ),
+          bottomNavigationBar: BottomNavigationBar(
+            items:  <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'الرئيسية',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+                label: 'بحث',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.add),
+                label: 'إضافة تلاوة',
+              ),
 
-          ],
-          currentIndex: _selectedIndex, //New
-          onTap: _onItemTapped,
+            ],
+            currentIndex: _selectedIndex, //New
+            onTap: _onItemTapped,
+          ),
+
+            backgroundColor: Colors.grey[150],
+
+
+            body:_pages.elementAt(_selectedIndex),
+
         ),
-
-          backgroundColor: Colors.grey[150],
-
-
-          body:_pages.elementAt(_selectedIndex),
-
       ),
     );
   }
