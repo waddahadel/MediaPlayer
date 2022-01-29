@@ -23,7 +23,7 @@ class _SearchPageState extends State<SearchPage> {
     return SafeArea(
       child: Scaffold(
               body: Container(
-                child: Column(
+                child: ListView(
                   children: [
                     SizedBox(height: 15,),
                     TextField(
@@ -59,7 +59,7 @@ class _SearchPageState extends State<SearchPage> {
                             return new ListView(
                               shrinkWrap: true,
                               children:
-                                  
+
                               snapshot.data!.docs.map((DocumentSnapshot document) {
                                 return
                                    GestureDetector(
@@ -71,7 +71,6 @@ class _SearchPageState extends State<SearchPage> {
                                        child: Padding(
                                          padding: const EdgeInsets.all(10.0),
                                          child: new Container(
-
                                            height: 200,
                                            width: 400,
                                            decoration: BoxDecoration(
@@ -85,8 +84,8 @@ class _SearchPageState extends State<SearchPage> {
                                            child:
                                            Padding(
                                              padding: const EdgeInsets.all(8.0),
-                                             child: Column(
-                                               crossAxisAlignment: CrossAxisAlignment.start,
+                                             child: ListView(
+
                                                children: [
                                                  Text(
                                                    document['rec_name']  ,
